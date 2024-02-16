@@ -2,6 +2,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import { engine } from "express-handlebars";
+import cors from 'cors';
 
 import { MONGODB_CNX_STR, PORT } from "./config/config.js";
 import { apiRouter } from "./routes/api/apirest.router.js";
@@ -43,6 +44,7 @@ initializePassport();
 initializeGithubPassport();
 app.use(passport.initialize());
 app.use(passport.session());
+// app.use(cors())
 
 // routers
 app.use("/", webRouter);
