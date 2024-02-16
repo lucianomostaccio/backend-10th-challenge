@@ -1,5 +1,5 @@
 import passport from "passport";
-import { usersManager } from "../dao/models/User.js";
+import { getDaoUsers } from "../daos/users/users.dao.js"
 import GitHubStrategy from "passport-github2";
 import { GITHUB_CALLBACK_URL, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET } from "./config.js";
 
@@ -15,7 +15,8 @@ const initializeGithubPassport = () => {
     async (accessToken, refreshToken, profile, done) => {
       try {
         console.log(profile);
-        const user = await usersManager.findOne({ email: profile._json.email });
+        const usersDao = getDaoUsers();
+        const user = await usersDao.findOne({ email: profile._json.email });
 
         if (!user) {
           let newUser = {
@@ -27,7 +28,7 @@ const initializeGithubPassport = () => {
             profile_picture: profile._json.avatar_url,
           };
 
-          let result = await usersManager.create(newUser);
+          let result = await usersDao.create(newUser);
           done(null, result);
         } else {
           done(null, user);
@@ -47,7 +48,8 @@ passport.serializeUser((user, done) => {
 
 passport.deserializeUser(async (id, done) => {
   try {
-    const user = await usersManager.findById(id);
+    const usersDao = getDaoUsers();
+    const user = await usersDao.findById(id);
     done(null, user);
   } catch (error) {
     done(error);

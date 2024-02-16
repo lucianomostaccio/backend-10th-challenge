@@ -1,6 +1,7 @@
+// @ts-nocheck
 import { Router } from "express";
 import { onlyLoggedInWeb } from "../../middlewares/authorization.js";
-import { usersManager } from "../../dao/models/User.js";
+import { getDaoUsers } from "../../daos/users/users.dao.js";
 import { ADMIN_EMAIL, ADMIN_PASSWORD } from "../../config/config.js";
 export const webUsersRouter = Router();
 
@@ -19,7 +20,7 @@ webUsersRouter.get("/register", (req, res) => {
 webUsersRouter.get("/profile", onlyLoggedInWeb, async (req, res) => {
     try {
       // Fetch the latest user data from the database using the user's email
-      const updatedUser = await usersManager.findOne(
+      const updatedUser = await getDaoUsers.findOne(
         { email: req.session["user"].email },
         { password: 0 }
       ).lean();
