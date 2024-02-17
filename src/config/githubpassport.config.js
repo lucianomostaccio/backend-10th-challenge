@@ -16,7 +16,7 @@ const initializeGithubPassport = () => {
       try {
         console.log(profile);
         const usersDao = getDaoUsers();
-        const user = await usersDao.findOne({ email: profile._json.email });
+        const user = await usersDao.readOne({ email: profile._json.email });
 
         if (!user) {
           let newUser = {
@@ -49,7 +49,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   try {
     const usersDao = getDaoUsers();
-    const user = await usersDao.findById(id);
+    const user = await usersDao.readOne(id);
     done(null, user);
   } catch (error) {
     done(error);

@@ -107,7 +107,7 @@ export class CartManagerMongoose {
 //   }
 
 //   async readOne(query) {
-//     return await cartsModel.findOne(query).lean();
+//     return await cartsModel.readOne(query).lean();
 //     return toPOJO(cart);
 //   }
 
@@ -116,7 +116,7 @@ export class CartManagerMongoose {
 //   }
 
 //   async updateOne(query, data) {
-//     const updatedCart = await this.cartsModel.findOneAndUpdate(query, data, { new: true }).lean();
+//     const updatedCart = await this.cartsModel.updateOne(query, data, { new: true }).lean();
 //     if (!updatedCart) {
 //       throw new Error("Cart not found");
 //     }
@@ -132,7 +132,7 @@ export class CartManagerMongoose {
 //   }
 
 //   async deleteOne(query) {
-//     const deletedCart = await this.cartsModel.findOneAndDelete(query).lean();
+//     const deletedCart = await this.cartsModel.deleteOne(query).lean();
 //     if (!deletedCart) {
 //       throw new Error("Cart not found");
 //     }

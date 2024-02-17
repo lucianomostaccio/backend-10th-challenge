@@ -12,7 +12,7 @@ const initializePassport = () => {
       async (username, password, done) => {
         try {
           const usersDao = getDaoUsers();
-          const user = await usersDao.findOne({ email: username });
+          const user = await usersDao.readOne({ email: username });
           if (!user) {
             console.log("User does not exist");
             return done(null, false, { message: "User does not exist" });
@@ -37,7 +37,7 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   try {
     const usersDao = getDaoUsers();
-    const user = await usersDao.findById(id);
+    const user = await usersDao.readOne(id);
     done(null, user);
   } catch (error) {
     done(error);

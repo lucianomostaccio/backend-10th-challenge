@@ -1,5 +1,7 @@
 import { usersService } from "../services/index.js";
 
+// all controllers uses Service's functions. In this case, usersService
+
 export async function getController(req, res, next) {
   try {
     // const user = await usersService.getUsers()

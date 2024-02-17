@@ -1,3 +1,5 @@
+//creates crud user async functions, using user.model
+
 import { User } from "../models/users.model.js";
 import { createHash } from "../utils/hashing.js";
 
@@ -50,7 +52,7 @@ export class UsersService {
 
   async updatePassword(userId, newPassword) {
     const hashedPassword = createHash(newPassword);
-    const updatedUser = await this.usersDao.findOneAndUpdate(
+    const updatedUser = await this.usersDao.updateOne(
       { _id: userId },
       { $set: { password: hashedPassword } },
       { new: true }

@@ -20,7 +20,8 @@ webUsersRouter.get("/register", (req, res) => {
 webUsersRouter.get("/profile", onlyLoggedInWeb, async (req, res) => {
     try {
       // Fetch the latest user data from the database using the user's email
-      const updatedUser = await getDaoUsers.findOne(
+      const usersDao = getDaoUsers();
+      const updatedUser = await usersDao.readOne(
         { email: req.session["user"].email },
         { password: 0 }
       ).lean();
