@@ -32,15 +32,14 @@ usersRouter.post("/", extractFile("profile_picture"), async (req, res) => {
 
     // Use the postController to handle user creation
     // Create a new user
-    const user = await postController(req,res)
-    console.log(user)
+    await postController(req,res)
 
-    // Successful response
-    res.status(201).json({
-      status: "success",
-      // payload: user.toObject(),
-      payload: user
-    });
+    // // Successful response
+    // res.status(201).json({
+    //   status: "success",
+    //   // payload: user.toObject(),
+    //   payload: user
+    // });
   } catch (error) {
     // Handle errors
     res.status(400).json({ status: "error", message: error.message });

@@ -4,11 +4,7 @@ import { getDaoProducts } from "../daos/products/products.dao.js";
 const productsDao = getDaoProducts();
 
 class ProductsService {
-  // Load products from the database
-  async loadProductsFromDatabase() {
-    return await productsDao.readMany();
-  }
-
+  
   async addProduct(data) {
     const product = new Product(data);
     const savedProduct = await productsDao.create(product.toPOJO());
@@ -18,9 +14,9 @@ class ProductsService {
   async readOne(criteria) {
     return await productsDao.readOne(criteria);
   }
-
+  // Load products from the database
   async readMany(criteria) {
-    return await productsDao.read(criteria);
+    return await productsDao.readMany(criteria);
   }
 
   //Get product by ID

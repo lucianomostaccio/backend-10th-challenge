@@ -1,11 +1,11 @@
 import { usersService } from "../services/index.js";
 
-// all controllers uses Service's functions. In this case, usersService
+// all controllers use Service's functions. In this case, usersService
 
 export async function getController(req, res, next) {
   try {
     // const user = await usersService.getUsers()
-    const user = await usersService.loadUsersFromDatabase();
+    const user = await usersService.getUser();
     res.result(user);
   } catch (error) {
     next(error);
@@ -18,7 +18,11 @@ export async function postController(req, res, next) {
     console.log("entered postController");
     const user = await usersService.addUser(req.body);
     console.log("user created by postController:", user);
-    res.result(user);
+    // res.result(user);
+    res.status(201).json({
+      status: "success",
+      payload: user,
+    });
   } catch (error) {
     console.error("Error in postController:", error);
     next(error);

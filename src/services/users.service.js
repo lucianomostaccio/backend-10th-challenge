@@ -9,7 +9,7 @@ export class UsersService {
     this.productsDao = productsDao;
   }
 
-  // Load users from the database
+  // Load all/many users from the database
   async loadUsersFromDatabase() {
     return await this.usersDao.readMany();
   }
@@ -25,8 +25,8 @@ export class UsersService {
   }
 
   // Get user by ID
-  async getUserById(_id) {
-    return await this.usersDao.readOne({ _id });
+  async getUser(email) {
+    return await this.usersDao.readOne({ email });
   }
 
   // Update user by ID
