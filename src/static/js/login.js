@@ -8,6 +8,7 @@ formLogin?.addEventListener("submit", async (event) => {
     // @ts-ignore
     body: new URLSearchParams(new FormData(formLogin)),
   });
+  console.log("datos del form fetcheados a api session:",response)
 
   if (response.status === 201) {
     const session = await response.json();

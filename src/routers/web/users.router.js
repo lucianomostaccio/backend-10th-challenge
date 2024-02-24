@@ -18,44 +18,44 @@ webUsersRouter.get("/register", (req, res) => {
 });
 
 webUsersRouter.get("/profile", onlyLoggedInWeb, async (req, res) => {
-    try {
-      // Fetch the latest user data from the database using the user's email
-      const usersDao = getDaoUsers();
-      const updatedUser = await usersDao.readOne(
-        { email: req.session["user"].email },
-        { password: 0 }
-      ).lean();
+  try {
+    const usersDao = getDaoUsers();
+    console.log("Session user object:", req.session["user"]); // Log the session user object
 
-      // @ts-ignore
-      updatedUser.role = (updatedUser.email === ADMIN_EMAIL && updatedUser.password === ADMIN_PASSWORD) ? "admin" : "user";
-      
-      // @ts-ignore
-      // Update the profile picture path to use forward slashes instead of backslashes
-      const normalizedImagePath = updatedUser.profile_picture.replace(/\\/g, '/');
+    const updatedUser = await usersDao
+      .readOne({ email: req.session["user"].email }, { password: 0 })
+      // .lean(); not needed as we are passing a plain object
+    console.log("Updated user object from database:", updatedUser); // Log the updated user object from DB
 
-      // Generate complete url for profile image and remove "src/static/" from it
-      // @ts-ignore
-      updatedUser.fullImageUrl = `http://localhost:8080/${normalizedImagePath.replace('src/static/', '')}`;
+    updatedUser.role =
+      updatedUser.email === ADMIN_EMAIL &&
+      updatedUser.password === ADMIN_PASSWORD
+        ? "admin"
+        : "user";
+    console.log("User role:", updatedUser.role); // Log the determined user role
 
-      // @ts-ignore
-      console.log('Image path:', updatedUser.fullImageUrl);
-  
-      // Update the session data with the latest user information
-      req.session["user"] = updatedUser;
-  
-      // Render the profile page with the updated user data
-      res.render("profile.handlebars", {
-        pageTitle: "Profile",
-        ...updatedUser,
-        style: "profile.css",
-      });
-    } catch (error) {
-      // Handle errors, e.g., log the error and render an error page
-      console.error("Error fetching updated user data:", error);
-      res.status(500).render("error.handlebars", { pageTitle: "Error" });
-    }
+    const normalizedImagePath = updatedUser.profile_picture.replace(/\\/g, "/");
+    console.log("Normalized image path:", normalizedImagePath); // Log the normalized image path
+
+    updatedUser.fullImageUrl = `http://localhost:8080/${normalizedImagePath.replace(
+      "src/static/",
+      ""
+    )}`;
+    console.log("Full image URL:", updatedUser.fullImageUrl); // Log the full image URL
+
+    req.session["user"] = updatedUser; // Update the session data with the latest user information
+    console.log("Session updated with new user data"); // Log session update
+
+    res.render("profile.handlebars", {
+      pageTitle: "Profile",
+      ...updatedUser,
+      style: "profile.css",
+    });
+  } catch (error) {
+    console.error("Error fetching updated user data:", error); // Log any errors
+    res.status(500).render("error.handlebars", { pageTitle: "Error" });
+  }
 });
-  
 
 webUsersRouter.get("/edit", onlyLoggedInWeb, (req, res) => {
   res.render("profileEdit.handlebars", {

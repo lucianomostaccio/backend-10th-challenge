@@ -21,14 +21,15 @@ const initializeGithubPassport = () => {
         if (!user) {
           let newUser = {
             first_name: profile._json.name,
-            last_name: '', //Ask user for last name once logged in (not included in github profile)
+            last_name: '', // Ask the user for the last name once logged in
             email: profile._json.email,
-            age: '', //Ask user once logged in
-            password: '', //Ask user once logged in
+            age: '', // Ask the user once logged in
+            password: '', // Ask the user to set a password once logged in
             profile_picture: profile._json.avatar_url,
           };
-
+        
           let result = await usersDao.create(newUser);
+          // Ensure that result has an _id property
           done(null, result);
         } else {
           done(null, user);
@@ -49,11 +50,13 @@ passport.serializeUser((user, done) => {
 passport.deserializeUser(async (id, done) => {
   try {
     const usersDao = getDaoUsers();
-    const user = await usersDao.readOne(id);
+    // Wrap the id in an object with the _id key
+    const user = await usersDao.readOne({ _id: id });
     done(null, user);
   } catch (error) {
     done(error);
   }
 });
+
 
 export default initializeGithubPassport;

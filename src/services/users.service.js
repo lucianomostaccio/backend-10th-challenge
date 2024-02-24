@@ -15,18 +15,39 @@ export class UsersService {
   }
 
   async addUser(data) {
-    console.log("entered addUser in users.service")
+    console.log("entered addUser in users.service");
     const user = new User(data);
-    console.log("user (before toPOJO):", user); // Inspect directly 
-    console.log("Data to be saved:", user.toPOJO()); // Examine after toPOJO 
+    console.log("user (before toPOJO):", user); // Inspect directly
+    console.log("Data to be saved:", user.toPOJO()); // Examine after toPOJO
     await this.usersDao.create(user.toPOJO());
     // console.log("Saved user:", savedUser);
     return user;
   }
 
-  // Get user by ID
-  async getUser(email) {
-    return await this.usersDao.readOne({ email });
+  // Get user by email
+  async getUserByEmail(email) {
+    try {
+      const user = await this.usersDao.readOne({ email });
+      if (!user) {
+        throw new Error("User not found");
+      }
+      return await user;
+    } catch (error) {
+      throw new Error(`Error retrieving user: ${error.message}`);
+    }
+  }
+
+  // Get user by id
+  async getUserById(_id) {
+    try {
+      const user = await this.usersDao.readOne({ _id });
+      if (!user) {
+        throw new Error("User not found");
+      }
+      return await user;
+    } catch (error) {
+      throw new Error(`Error retrieving user: ${error.message}`);
+    }
   }
 
   // Update user by ID

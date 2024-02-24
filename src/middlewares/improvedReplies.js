@@ -5,5 +5,11 @@ export function improvedReplies(req, res, next) {
   res['result'] = (payload) => {
     res.status(200).json({ status: 'success', payload })
   }
+  res['deleted'] = () => {
+    res.status(204).json({ status: 'success' })
+  }
+  res['updated'] = () => {
+    res.status(204).json({ status: 'success' })
+  }
   next()
 }

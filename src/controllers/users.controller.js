@@ -4,9 +4,8 @@ import { usersService } from "../services/index.js";
 
 export async function getController(req, res, next) {
   try {
-    // const user = await usersService.getUsers()
-    const user = await usersService.getUser();
-    res.result(user);
+    const user = await usersService.getUserByEmail(req.user.email);
+    res.status(200).json({ status: "success", payload: user });
   } catch (error) {
     next(error);
   }
@@ -19,10 +18,7 @@ export async function postController(req, res, next) {
     const user = await usersService.addUser(req.body);
     console.log("user created by postController:", user);
     // res.result(user);
-    res.status(201).json({
-      status: "success",
-      payload: user,
-    });
+    res.created(user);
   } catch (error) {
     console.error("Error in postController:", error);
     next(error);
@@ -50,15 +46,11 @@ export async function putController(req, res, next) {
         userId,
         req.body.password
       );
-      res.result({
-        // Adjust response if needed
-        status: "success",
-        message: "password updated",
-      });
+      res.updated(updatedUser);
     } else {
       // 2. General Profile Updates:
       const updatedUser = await usersService.updateUser(userId, req.body);
-      res.result(updatedUser);
+      res.updated(updatedUser);
     }
   } catch (error) {
     next(error);

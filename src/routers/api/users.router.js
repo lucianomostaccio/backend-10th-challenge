@@ -1,4 +1,3 @@
-// @ts-nocheck
 //register
 // Import necessary modules
 import { Router } from "express";
@@ -22,24 +21,17 @@ usersRouter.post("/", extractFile("profile_picture"), async (req, res) => {
   try {
     // Hash the password
     req.body.password = createHash(req.body.password);
-    console.log(req.body.password)
+    console.log(req.body.password);
 
     // console.log(req.file);
+
     // Set the profile picture path based on the uploaded file
     if (req.file) {
       req.body.profile_picture = req.file.path;
     }
 
     // Use the postController to handle user creation
-    // Create a new user
-    await postController(req,res)
-
-    // // Successful response
-    // res.status(201).json({
-    //   status: "success",
-    //   // payload: user.toObject(),
-    //   payload: user
-    // });
+    await postController(req, res);
   } catch (error) {
     // Handle errors
     res.status(400).json({ status: "error", message: error.message });
@@ -47,19 +39,19 @@ usersRouter.post("/", extractFile("profile_picture"), async (req, res) => {
 });
 
 // Retrieve current user
-usersRouter.get("/current", onlyLoggedInRest, async (req, res) => {
-  try {
-    // @ts-ignore  
-    // const userId = req["user"]._id || req["user"].email;
-    const userId = req["user"].email; 
-
-    // Leverage the getController. It may need adaptation in UsersService 
-    const user = await getController({ email: userId } ); // Or { _id: userId } 
-    res.json({ status: "success", payload: user });
-} catch (error) {
-    res.status(400).json({ status: "error", message: error.message });
-}
-});
+// usersRouter.get("/current", onlyLoggedInRest, async (req, res) => {
+//   try {
+//     // @ts-ignore
+//     const user = await getController({ email: req["user"].email }, { password: 0 });
+//     // Leverage the getController.
+//     // const userEmail = req.user.email;
+//     console.log("req user is:", user);
+//     res.status(200).json({ status: 'success', payload:user })
+//   } catch (error) {
+//     res.status(400).json({ status: "error", message: error.message });
+//   }
+// });
+usersRouter.get("/current", onlyLoggedInRest, getController);
 
 //   // @ts-ignore
 //   const usuario = await getDaoUsers
@@ -68,7 +60,6 @@ usersRouter.get("/current", onlyLoggedInRest, async (req, res) => {
 //     .lean();
 //   res.json({ status: "success", payload: usuario });
 // });
-
 
 // Update user password (PUT /api/users/resetpass)
 usersRouter.put("/resetpass", async function (req, res) {
@@ -84,7 +75,7 @@ usersRouter.put("/resetpass", async function (req, res) {
     // );
 
     // Adapt putController to handle password change specifically
-    const updatedUser = await putController(req, res); 
+    const updatedUser = await putController(req, res);
     // Handle case where user does not exist
     // if (!updatedUser) {
     //   return res
@@ -121,7 +112,8 @@ usersRouter.put(
         updateFields.profile_picture = req.file.path;
       }
 
-      const updatedUser = await getDaoUsers.findOneAndUpdate(
+      // @ts-ignore
+      const updatedUser = await getDaoUsers.updateOne(
         { email: req.body.email },
         { $set: updateFields },
         { new: true }
@@ -148,3 +140,5 @@ usersRouter.put(
     }
   }
 );
+
+usersRouter.delete("/:id", deleteController);
