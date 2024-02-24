@@ -2,27 +2,27 @@ import { randomUUID } from "node:crypto";
 
 export class Product {
   #_id;
-  #name;
+  #title;
   #price;
-  constructor({ _id = randomUUID(), name, price }) {
+  constructor({ _id = randomUUID(), title, price }) {
     this.#_id = _id;
-    this.name = name;
+    this.title = title;
     this.price = price;
   }
 
   get _id() {
     return this.#_id;
   }
-  get name() {
-    return this.#name;
+  get title() {
+    return this.#title;
   }
   get price() {
     return this.#price;
   }
 
-  set name(value) {
-    if (!value) throw new Error("name is mandatory");
-    this.#name = value;
+  set title(value) {
+    if (!value) throw new Error("title is mandatory");
+    this.#title = value;
   }
 
   set price(value) {
@@ -34,7 +34,7 @@ export class Product {
   toPOJO() {
     return {
       _id: this.#_id,
-      name: this.#name,
+      title: this.#title,
       price: this.#price,
     };
   }

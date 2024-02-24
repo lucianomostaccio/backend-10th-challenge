@@ -25,7 +25,7 @@ class CartsService {
   }
 
   // Get cart by ID
-  async getCartById(_id) {
+  async getCart(_id) {
     return await cartsDao.readOne({ _id });
   }
 

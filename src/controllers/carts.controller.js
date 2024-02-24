@@ -3,7 +3,7 @@ import { cartsService } from "../services/carts.service.js";
 export async function getController(req, res, next) {
   try {
     // const cart = await cartsService.getCarts()
-    const cart = await cartsService.readMany({});
+    const cart = await cartsService.getCart({});
     res.result(cart);
   } catch (error) {
     next(error);

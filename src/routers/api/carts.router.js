@@ -4,9 +4,9 @@ import {
   getController,
   putController,
   deleteController,
-} from "../controllers/carts.controller.js";
+} from "../../controllers/carts.controller.js";
 
-import { createOrder } from "../controllers/orders.controller.js";
+import { createOrder } from "../../controllers/orders.controller.js";
 
 export const cartsRouter = Router();
 
@@ -18,4 +18,4 @@ cartsRouter.put("/:cartId", putController);
 
 cartsRouter.delete("/:cartId", deleteController);
 
-cartsRouter.post("/api/orders", createOrder);
+cartsRouter.post("/:cid/purchase", createOrder);

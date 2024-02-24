@@ -9,7 +9,6 @@ export async function createOrder(req, res, next) {
     const orderData = {
       products: req.session.cart.products, // Suponiendo que el carrito está almacenado en la sesión
       totalPrice: req.session.cart.totalPrice, // Suponiendo que el carrito tiene un precio total
-      // Otros datos relevantes de la orden
     };
 
     const order = await ordersService.create(orderData);
