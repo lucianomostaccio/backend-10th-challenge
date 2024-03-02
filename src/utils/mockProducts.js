@@ -1,4 +1,4 @@
-import faker from 'faker'
+import { faker } from "@faker-js/faker";
 
 function generateMockProducts(count = 100) {
   const products = [];
@@ -6,13 +6,18 @@ function generateMockProducts(count = 100) {
   for (let i = 0; i < count; i++) {
     products.push({
       id: i + 1,
-      title: faker.commerce.productName(),
+      title: faker.commerce.product(),
       description: faker.commerce.productDescription(),
-      code: faker.random.alphaNumeric(10),
-      price: faker.commerce.price(),
-      stock: faker.random.number({ min: 0, max: 100 }),
+      code: faker.string.alphanumeric(6),
+      price: faker.commerce.price({
+        min: 1000,
+        max: 2000,
+        dec: 2,
+        symbol: "$",
+      }),
+      stock: faker.number.int({ min: 10, max: 100 }),
       category: faker.commerce.department(),
-      thumbnails: [faker.image.imageUrl()],
+      thumbnails: [faker.image.url({ height: 640, width: 480 })],
     });
   }
 
